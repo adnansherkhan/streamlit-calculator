@@ -1,18 +1,18 @@
-from streamlit.testing.v1 import AppTest
+import streamlit as st
 
-def test_calculator():
-    at = AppTest.from_file("app.py")
-    at.run()
+st.title("Simple Calculator")
 
-    # Set values
-    at.number_input[0].set_value(5.0)
-    at.selectbox[0].set_value("Add")
-    at.number_input[1].set_value(3.0)
-    at.button[0].click()
+num1 = st.number_input("Enter first number", value=0.0)
+operation = st.selectbox("Select operation", ["Add", "Subtract", "Multiply", "Divide"])
+num2 = st.number_input("Enter second number", value=0.0)
 
-    # Capture all outputs where result may appear
-    output_values = [str(w.value) for w in at.write]
-
-    # Assert that the expected result exists
-    assert any("Result: 8.0" in v for v in output_values), \
-        f"Expected result not found. Captured outputs: {output_values}"
+if st.button("Calculate"):
+    if operation == "Add":
+        result = num1 + num2
+    elif operation == "Subtract":
+        result = num1 - num2
+    elif operation == "Multiply":
+        result = num1 * num2
+    elif operation == "Divide":
+        result = num1 / num2 if num2 != 0 else "Error: Division by zero"
+    st.write(f"Result: {result}")
